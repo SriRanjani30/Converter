@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Unit Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .converter {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input, select {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter">
+        <h2>Unit Converter</h2>
+        <input type="number" id="inputValue" placeholder="Enter value">
+        <select id="inputUnit">
+            <option value="meters">Meters</option>
+            <option value="kilometers">Kilometers</option>
+            <option value="miles">Miles</option>
+            <option value="feet">Feet</option>
+        </select>
+        <select id="outputUnit">
+            <option value="meters">Meters</option>
+            <option value="kilometers">Kilometers</option>
+            <option value="miles">Miles</option>
+            <option value="feet">Feet</option>
+        </select>
+        <button onclick="convert()">Convert</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        function convert() {
+            let value = parseFloat(document.getElementById('inputValue').value);
+            let inputUnit = document.getElementById('inputUnit').value;
+            let outputUnit = document.getElementById('outputUnit').value;
+            let result;
+            if (inputUnit === outputUnit) {
+                result = value;
+            } else {
+                if (inputUnit === 'meters') {
+                    if (outputUnit === 'kilometers') result = value / 1000;
+                    else if (outputUnit === 'miles') result = value / 1609.34;
+                    else if (outputUnit === 'feet') result = value * 3.28084;
+                } else if (inputUnit === 'kilometers') {
+                    if (outputUnit === 'meters') result = value * 1000;
+                    else if (outputUnit === 'miles') result = value / 1.60934;
+                    else if (outputUnit === 'feet') result = value * 3280.84;
+                } else if (inputUnit === 'miles') {
+                    if (outputUnit === 'meters') result = value * 1609.34;
+                    else if (outputUnit === 'kilometers') result = value * 1.60934;
+                    else if (outputUnit === 'feet') result = value * 5280;
+                } else if (inputUnit === 'feet') {
+                    if (outputUnit === 'meters') result = value / 3.28084;
+                    else if (outputUnit === 'kilometers') result = value / 3280.84;
+                    else if (outputUnit === 'miles') result = value / 5280;
+                }
+            }
+            document.getElementById('result').innerText = `Result: ${result} ${outputUnit}`;
+        }
+    </script>
+</body>
+</html>
