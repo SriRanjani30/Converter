@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Unit Converter</title>
+    <title>Enhanced Unit Converter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-image: url('Images/Background.jpg');
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #333;
         }
         .converter {
             background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 350px;
         }
         input, select {
             padding: 10px;
@@ -28,19 +31,39 @@
             border-radius: 5px;
             width: 100%;
             max-width: 300px;
+            font-size: 1rem;
         }
         button {
-            padding: 10px 15px;
-            background-color: #007bff;
+            padding: 12px 18px;
+            background-color: #28a745;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
             max-width: 300px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        #history {
+            margin-top: 20px;
+            text-align: left;
+        }
+        #history p {
+            margin: 0;
+            padding: 5px;
+            font-size: 0.9rem;
+            background-color: #f9f9f9;
+            border-left: 4px solid #007bff;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -62,13 +85,22 @@
         </select>
         <button onclick="convert()">Convert</button>
         <p id="result"></p>
+        <div id="history">
+            <h3>Conversion History</h3>
+        </div>
     </div>
     <script>
+        let history = [];
         function convert() {
             let value = parseFloat(document.getElementById('inputValue').value);
             let inputUnit = document.getElementById('inputUnit').value;
             let outputUnit = document.getElementById('outputUnit').value;
             let result;
+
+            if (isNaN(value)) {
+                document.getElementById('result').innerText = "Please enter a valid number.";
+                return;
+            }
             if (inputUnit === outputUnit) {
                 result = value;
             } else {
@@ -90,7 +122,21 @@
                     else if (outputUnit === 'miles') result = value / 5280;
                 }
             }
-            document.getElementById('result').innerText = `Result: ${result} ${outputUnit}`;
+            document.getElementById('result').innerText = `Result: ${result.toFixed(2)} ${outputUnit}`;
+            if (history.length >= 5) {
+                history.shift(); 
+            }
+            history.push(`${value} ${inputUnit} = ${result.toFixed(2)} ${outputUnit}`);
+            displayHistory();
+        }
+        function displayHistory() {
+            let historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = "<h3>Conversion History</h3>";
+            history.forEach(entry => {
+                let p = document.createElement('p');
+                p.innerText = entry;
+                historyDiv.appendChild(p);
+            });
         }
     </script>
 </body>
