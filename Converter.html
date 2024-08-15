@@ -3,77 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Unit Converter</title>
+    <title>Super Cool Unit Converter</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f5f5f5;
+            background-image: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            color: #333;
-            transition: background-color 0.3s ease;
+            color: #444;
         }
         .converter {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 350px;
+            width: 400px;
             position: relative;
+            border: 5px solid #ff6b6b;
         }
         input, select {
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 12px 0;
+            border: 3px solid #ff6b6b;
+            border-radius: 10px;
             width: 100%;
-            max-width: 300px;
-            font-size: 1rem;
+            max-width: 340px;
+            font-size: 1.1rem;
+            background-color: #ffe4e1;
+            color: #444;
+            outline: none;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #ff7f50;
+            background-color: #ffebcd;
         }
         button {
-            padding: 12px 18px;
-            background-color: #28a745;
+            padding: 14px 20px;
+            background-color: #ff6b6b;
             color: #fff;
-            border: none;
-            border-radius: 5px;
+            border: 3px solid #ff6b6b;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
-            max-width: 300px;
-            font-size: 1rem;
+            max-width: 340px;
+            font-size: 1.1rem;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
         button:hover {
-            background-color: #218838;
-            transform: scale(1.05);
+            background-color: #ff4d4d;
+            transform: scale(1.1);
         }
         h2 {
             margin-bottom: 20px;
-            color: #007bff;
+            color: #ff6b6b;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 2px #444;
+        }
+        #result {
+            margin: 20px 0;
+            font-size: 1.4rem;
+            color: #e91e63;
+            text-shadow: 1px 1px 2px #444;
         }
         #history {
-            margin-top: 20px;
+            margin-top: 25px;
             text-align: left;
         }
-        #history p {
-            margin: 0;
-            padding: 5px;
-            font-size: 0.9rem;
-            background-color: #f9f9f9;
-            border-left: 4px solid #007bff;
-            margin-bottom: 5px;
+        #history h3 {
+            color: #ff6b6b;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px #444;
         }
-        .theme-selector {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        #history p {
+            margin: 8px 0;
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #ffebcd;
+            border-left: 6px solid #ff6b6b;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+         .theme-selector {
+            position: fixed;  
+            top: 10px;        
+            right: 10px;     
+            background-color: #ffffff; 
+            padding: 5px 10px;  
+            border-radius: 8px;  
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .theme-selector label {
+            font-size: 1rem;
+            color: #ff6b6b;
+            margin-right: 5px;
         }
         .theme-selector select {
-            padding: 5px;
-            border-radius: 5px;
+            padding: 6px;
+            border-radius: 6px;
+            border: 2px solid #ff6b6b;
+            background-color: #ffe4e1;
+            color: #444;
+            font-size: 1rem;
+            outline: none;
         }
     </style>
 </head>
@@ -85,9 +123,10 @@
                 <option value="default">Default</option>
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
+                <option value="neon">Neon</option>
             </select>
         </div>
-        <h2>Unit Converter</h2>
+        <h2>Super Cool Unit Converter</h2>
         <input type="number" id="inputValue" placeholder="Enter value">
         <select id="inputUnit">
             <option value="meters">Meters</option>
@@ -108,16 +147,17 @@
             <h3>Conversion History</h3>
         </div>
     </div>
+
     <script>
         let history = [];
+
         function convert() {
             let value = parseFloat(document.getElementById('inputValue').value);
             let inputUnit = document.getElementById('inputUnit').value;
             let outputUnit = document.getElementById('outputUnit').value;
             let result;
-
             if (isNaN(value)) {
-                document.getElementById('result').innerText = "Please enter a valid number.";
+                document.getElementById('result').innerText = "Oops! Enter a number.";
                 return;
             }
             if (inputUnit === outputUnit) {
@@ -148,6 +188,7 @@
             history.push(`${value} ${inputUnit} = ${result.toFixed(2)} ${outputUnit}`);
             displayHistory();
         }
+
         function displayHistory() {
             let historyDiv = document.getElementById('history');
             historyDiv.innerHTML = "<h3>Conversion History</h3>";
@@ -162,7 +203,6 @@
                 alert("No conversions to save.");
                 return;
             }
-
             let blob = new Blob([history.join('\n')], { type: 'text/plain' });
             let link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
@@ -172,17 +212,25 @@
         function changeTheme() {
             let theme = document.getElementById('theme').value;
             if (theme === 'dark') {
-                document.body.style.backgroundColor = '#333';
-                document.body.style.color = '#fff';
-                document.querySelector('.converter').style.backgroundColor = '#444';
+                document.body.style.backgroundColor = '#2c3e50';
+                document.body.style.color = '#ecf0f1';
+                document.querySelector('.converter').style.backgroundColor = '#34495e';
+                document.querySelector('.converter').style.borderColor = '#3498db';
             } else if (theme === 'light') {
-                document.body.style.backgroundColor = '#fff';
-                document.body.style.color = '#333';
-                document.querySelector('.converter').style.backgroundColor = '#f4f4f4';
+                document.body.style.backgroundColor = '#ffffff';
+                document.body.style.color = '#34495e';
+                document.querySelector('.converter').style.backgroundColor = '#ffffff';
+                document.querySelector('.converter').style.borderColor = '#bdc3c7';
+            } else if (theme === 'neon') {
+                document.body.style.backgroundColor = '#0f0f0f';
+                document.body.style.color = '#39ff14';
+                document.querySelector('.converter').style.backgroundColor = '#111111';
+                document.querySelector('.converter').style.borderColor = '#39ff14';
             } else {
-                document.body.style.backgroundColor = '#f4f4f4';
-                document.body.style.color = '#333';
-                document.querySelector('.converter').style.backgroundColor = '#fff';
+                document.body.style.backgroundColor = '#f5f5f5';
+                document.body.style.color = '#444';
+                document.querySelector('.converter').style.backgroundColor = '#ffffff';
+                document.querySelector('.converter').style.borderColor = '#ff6b6b';
             }
         }
     </script>
