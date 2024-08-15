@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('Images/Background.jpg');
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
@@ -15,6 +14,7 @@
             height: 100vh;
             margin: 0;
             color: #333;
+            transition: background-color 0.3s ease;
         }
         .converter {
             background-color: #fff;
@@ -23,6 +23,7 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 350px;
+            position: relative;
         }
         input, select {
             padding: 10px;
@@ -65,10 +66,27 @@
             border-left: 4px solid #007bff;
             margin-bottom: 5px;
         }
+        .theme-selector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .theme-selector select {
+            padding: 5px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="converter">
+        <div class="theme-selector">
+            <label for="theme">Theme:</label>
+            <select id="theme" onchange="changeTheme()">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+            </select>
+        </div>
         <h2>Unit Converter</h2>
         <input type="number" id="inputValue" placeholder="Enter value">
         <select id="inputUnit">
@@ -85,6 +103,7 @@
         </select>
         <button onclick="convert()">Convert</button>
         <p id="result"></p>
+        <button onclick="saveResult()">Save Result</button>
         <div id="history">
             <h3>Conversion History</h3>
         </div>
@@ -124,7 +143,7 @@
             }
             document.getElementById('result').innerText = `Result: ${result.toFixed(2)} ${outputUnit}`;
             if (history.length >= 5) {
-                history.shift(); 
+                history.shift();
             }
             history.push(`${value} ${inputUnit} = ${result.toFixed(2)} ${outputUnit}`);
             displayHistory();
@@ -137,6 +156,34 @@
                 p.innerText = entry;
                 historyDiv.appendChild(p);
             });
+        }
+        function saveResult() {
+            if (history.length === 0) {
+                alert("No conversions to save.");
+                return;
+            }
+
+            let blob = new Blob([history.join('\n')], { type: 'text/plain' });
+            let link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'conversion_history.txt';
+            link.click();
+        }
+        function changeTheme() {
+            let theme = document.getElementById('theme').value;
+            if (theme === 'dark') {
+                document.body.style.backgroundColor = '#333';
+                document.body.style.color = '#fff';
+                document.querySelector('.converter').style.backgroundColor = '#444';
+            } else if (theme === 'light') {
+                document.body.style.backgroundColor = '#fff';
+                document.body.style.color = '#333';
+                document.querySelector('.converter').style.backgroundColor = '#f4f4f4';
+            } else {
+                document.body.style.backgroundColor = '#f4f4f4';
+                document.body.style.color = '#333';
+                document.querySelector('.converter').style.backgroundColor = '#fff';
+            }
         }
     </script>
 </body>
